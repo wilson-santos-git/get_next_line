@@ -6,77 +6,65 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:27 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/04/28 19:49:16 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:38:02 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// if buffer 42 read 42 and save in calloc str
-// if while read 42 not \n read 42 again (LOOP)
-// if find \n while in middle of read 42 cut str and save rest in another str
-// after find of \n strjoin all strings behind and return them as one str
+// read until \n or EOF (read to char buff[BUFFSIZE + 1] & strjoin)
+// #\n FOUND# extract/duplicate substring until \n to return THIS
+// trim initial string until first \n and save it in a STATIC CHAR*
 
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include "get_next_line.h"
 
-int	ft_spec_strcpy(char *dst, const char *src, int i);
+int		ft_spec_strcpy(char *dst, const char *src, int i);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strlcpy(char *dst, const char *src, size_t size);
 size_t	ft_strlen(const char *s);
+char	*ft_read(int fd);
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	int	i = 0;
-	int	n = 82746;
-	char *p = 0;
-	char *savep = 0;
-	char *currentjoin = 0;
-	
-	p = calloc(n, sizeof(char));
-	if (!p)
-		return (0);
-	savep = calloc(n , sizeof(char));
-	if (!savep)
-		return (0);
-	currentjoin = calloc(n, sizeof(char));
-	if (!currentjoin)
-		return (0);
-	read(fd, p, n);
-	currentjoin = ft_strjoin(ft_strlcpy(savep, p, n + 1), currentjoin);
-	while (i <= n && p[i] != '\n')
+	//static char	*mainsource;
+	char		*p;
+
+	p = ft_read(fd);
+	return (p);
+}
+
+char	*ft_read(int fd)
+{
+	int		i = 0;
+	int		ret = 1;
+	char	buf[BUFFER_SIZE + 1];
+	char 	*joint = NULL;
+	while (ret > 0)
 	{
-		if (i == n)
+		ret = read(fd, buf, BUFFER_SIZE);
+		buf[ret] = '\0';
+		printf("%s\n", buf);
+		joint = ft_strjoin(joint, buf);
+		printf("%s\n", joint);
+		i = 0;
+		while (joint[i])
 		{
-			savep = ft_strlcpy(savep, p, n + 1);
-			free(p);
-			p = calloc(n, sizeof(char));
-			if (!p)
-				return (0);
-			read(fd, p, n);
-			i = 0;
-			currentjoin = ft_strjoin(currentjoin, ft_strlcpy(savep, p, n + 1));
-			while (currentjoin[i])
+			if (joint[i] == '\n')
 			{
-				i++;
-				if (currentjoin[i] == '\n')
-					currentjoin[i + 1] = '\0';
+				return (joint);
 			}
-			i = 0;
-		}
-		i++;
-		if (p[i] == '\n')
-		{
-			p[i + 1] = '\0';
+			i++;
 		}
 	}
-	return (currentjoin);
+	return (joint);
 }
 
 int	main(void)
 {
 	int	fd = open("/nfs/homes/wteles-d/Wilson/get_next_line/testfd.txt", O_RDWR);
-	printf("FINAL RETURN 1 -> %s\n",get_next_line(fd));
+	printf("FINAL RETURN 1 -> %s\n", get_next_line(fd));
 }
 
 int	ft_spec_strcpy(char *dst, const char *src, int i)
@@ -84,7 +72,7 @@ int	ft_spec_strcpy(char *dst, const char *src, int i)
 	size_t	j;
 
 	j = 0;
-	while (src[j] != '\0')
+	while (src && src[j])
 	{
 		dst[i] = src[j];
 		i++;
@@ -99,7 +87,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	char	*p;
 
 	i = 0;
-	if (!s1 || !s2)
+	if (!s2)
 		return (NULL);
 	p = (char *)calloc(ft_strlen(s1) + ft_strlen(s2) + 1, 1);
 	if (p == NULL)
@@ -131,7 +119,7 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (s[i])
+	while (s && s[i])
 			i++;
 	return (i);
 }
