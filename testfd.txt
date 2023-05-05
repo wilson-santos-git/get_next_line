@@ -1,3 +1,10 @@
-LINE NUMBER 1
-LINE NUMBER 2
-LINE NUMBER 3
+this is a test file
+if this is not printed in terminal
+plz report
+yes
+
+
+
+
+
+good
