@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:27 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/05 19:03:57 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/08 19:00:23 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,51 @@ char	*get_next_line(int fd)
 {
 	static char	*mainsource;
 	char		*p;
-	char		*r;
+	char		*readptr;
+	char		*finalreturn;
 	
 	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) == -1)
 		return (NULL);
-	r = ft_read(fd);
-	p = ft_strjoin(mainsource, r);
-	free(r);
-	if (ft_strlen(p) == 0)
+	readptr = ft_read(fd);
+	if (!readptr && !mainsource)
 		return (NULL);
+	p = ft_strjoin(mainsource, readptr);
+	free(readptr);
+	free(mainsource);
+	mainsource = NULL;
+	if (ft_strlen(p) == 0)
+	{
+		free(p);
+		return (NULL);
+	}
 	mainsource = ft_trim_str(p);
-	return (ft_extract_str(p));
+	finalreturn = ft_extract_str(p);
+	free(p);
+	return (finalreturn);
 }
 
 char	*ft_read(int fd)
 {
-	int		i = 0;
-	int		ret = 1;
+	int		i ;
+	int		ret;
 	char	buf[BUFFER_SIZE + 1];
-	char 	*joint = NULL;
+	char 	*joint;
+	char 	*save;
+
+	i = 0;
+	ret = 1;
+	joint = NULL;
 	while (ret > 0)
 	{
 		ret = read(fd, buf, BUFFER_SIZE);
+		if (ret < 0)
+			return (NULL);
 		buf[ret] = '\0';
-		joint = ft_strjoin(joint, buf);
+		save = ft_strjoin(joint, buf);
+		free(joint);
+		joint = save;
+		if (!joint)
+			return (NULL);
 		i = 0;
 		while (joint[i])
 		{
@@ -71,8 +92,10 @@ char	*ft_read(int fd)
 
 char	*ft_extract_str(char *str)
 {
-	int	i = 0;
+	int	i;
 	char *dup;
+
+	i = 0;
 	if (!str)
 		return (NULL);
 	while (str && str[i] && str[i] != '\n')
@@ -85,10 +108,14 @@ char	*ft_extract_str(char *str)
 
 char	*ft_trim_str(char *str)
 {
-	int i = 0;
-	int j = 0;
-	int	trimsize = 0;
+	int i;
+	int j;
+	int	trimsize;
 	char *trim;
+
+	i = 0;
+	j = 0;
+	trimsize = 0;
 	if (!str)
 		return (NULL);
 	while (str && str[i] && str[i] != '\n')
@@ -111,9 +138,19 @@ char	*ft_trim_str(char *str)
 
 int	main(void)
 {
-	int	fd = open("/nfs/homes/wteles-d/Wilson/get_next_line/testfd.txt", O_RDWR);
+	/*FILE IN 42*/
+	// int	fd = open("/nfs/homes/wteles-d/Wilson/get_next_line/testfd.txt", O_RDWR);
+	
+	/*FILE AT HOME*/
+	int	fd = open("/home/kraiwsl/get_next_line/get_next_line/testfd.txt", O_RDWR);
 	char *p;
 	
+	printf("-> %s\n", p = get_next_line(fd));
+	free(p);
+	printf("-> %s\n", p = get_next_line(fd));
+	free(p);
+	printf("-> %s\n", p = get_next_line(fd));
+	free(p);
 	printf("-> %s\n", p = get_next_line(fd));
 	free(p);
 	printf("-> %s\n", p = get_next_line(fd));
@@ -155,16 +192,21 @@ int	ft_spec_strcpy(char *dst, const char *src, int i)
 char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
-	char	*p = 0;
+	char	*p;
+	int		s1size;
+	int		s2size;
 
+	s1size = ft_strlen(s1);
+	s2size = ft_strlen(s2);
+	if (!s1 && !s2)
+		return (NULL);
 	i = 0;
-	p = (char *)calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
+	p = (char *)malloc((s1size + s2size + 1) * sizeof(char));
 	if (p == NULL)
 		return (p);
 	i = ft_spec_strcpy(p, s1, i);
 	i = ft_spec_strcpy(p, s2, i);
 	p[i] = '\0';
-	free(s1);
 	return (p);
 }
 
