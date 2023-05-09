@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:27 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/09 18:06:39 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/09 18:34:28 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*ft_trim_str(char *str)
 		return (NULL);
 	while (str && str[i] && str[i] != '\n')
 		i++;
-	if (str)
+	if (str[i])
 		i++;
 	trimsize = (ft_strlen(str)) - i;
 	trim = (char *)malloc(trimsize + 1 * sizeof(char));
