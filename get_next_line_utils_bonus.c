@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:19 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/09 17:04:46 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/09 17:05:03 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_spec_strcpy(char *dst, const char *src, int i)
 {

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:27 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/09 18:06:39 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/09 18:08:31 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_read(int fd)
 {
@@ -87,9 +87,9 @@ char	*ft_trim_str(char *str)
 	return (trim);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line_bonus(int fd)
 {
-	static char	*mainsource;
+	static char	*mainsource[1024];
 	char		*p;
 	char		*readptr;
 	char		*finalreturn;
@@ -97,18 +97,18 @@ char	*get_next_line(int fd)
 	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) == -1)
 		return (NULL);
 	readptr = ft_read(fd);
-	if (!readptr && !mainsource)
+	if (!readptr && !*mainsource)
 		return (NULL);
-	p = ft_strjoin(mainsource, readptr);
+	p = ft_strjoin(mainsource[fd], readptr);
 	free(readptr);
-	free(mainsource);
-	mainsource = NULL;
+	free(mainsource[fd]);
+	mainsource[fd] = NULL;
 	if (ft_strlen(p) == 0)
 	{
 		free(p);
 		return (NULL);
 	}
-	mainsource = ft_trim_str(p);
+	mainsource[fd] = ft_trim_str(p);
 	finalreturn = ft_extract_str(p);
 	free(p);
 	return (finalreturn);
