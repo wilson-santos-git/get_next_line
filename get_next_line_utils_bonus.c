@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:19 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/09 17:05:03 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:02:17 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include "get_next_line_bonus.h"
 
-int	ft_spec_strcpy(char *dst, const char *src, int i)
+size_t	ft_spec_strcpy(char *dst, const char *src, int i)
 {
 	size_t	j;
 
@@ -32,10 +32,10 @@ int	ft_spec_strcpy(char *dst, const char *src, int i)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	int		i;
+	int	i;
 	char	*p;
-	int		s1size;
-	int		s2size;
+	int	s1size;
+	int	s2size;
 
 	s1size = ft_strlen(s1);
 	s2size = ft_strlen(s2);
@@ -51,9 +51,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (p);
 }
 
-char	*ft_strlcpy(char *dst, const char *src, size_t size)
+char	*ft_strlcpy(char *dst, const char *src, int size)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (size == 0)

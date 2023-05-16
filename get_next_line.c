@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:27 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/09 18:34:28 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/16 20:31:15 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 
 char	*ft_read(int fd)
 {
-	int		i ;
-	int		ret;
 	char	buf[BUFFER_SIZE + 1];
 	char	*joint;
 	char	*save;
+	ssize_t	ret;
+	int		i;
 
 	ret = 1;
 	joint = NULL;
@@ -65,7 +65,7 @@ char	*ft_trim_str(char *str)
 {
 	int		i;
 	int		j;
-	int		trimsize;
+	size_t	trimsize;
 	char	*trim;
 
 	i = 0;
@@ -75,7 +75,7 @@ char	*ft_trim_str(char *str)
 		return (NULL);
 	while (str && str[i] && str[i] != '\n')
 		i++;
-	if (str[i])
+	if (str && str[i] == '\n' && str[i])
 		i++;
 	trimsize = (ft_strlen(str)) - i;
 	trim = (char *)malloc(trimsize + 1 * sizeof(char));
@@ -93,6 +93,7 @@ char	*get_next_line(int fd)
 	char		*p;
 	char		*readptr;
 	char		*finalreturn;
+
 
 	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) == -1)
 		return (NULL);
@@ -113,3 +114,15 @@ char	*get_next_line(int fd)
 	free(p);
 	return (finalreturn);
 }
+
+// int	main()
+// {
+// 	size_t fd = open("testfd.txt", O_RDONLY);
+
+// 	printf("%s\n", get_next_line(fd));
+// 	printf("%s\n", get_next_line(fd));
+// 	printf("%s\n", get_next_line(fd));
+// 	printf("%s\n", get_next_line(fd));
+// 	printf("%s\n", get_next_line(fd));
+// 	printf("%s\n", get_next_line(fd));
+// }

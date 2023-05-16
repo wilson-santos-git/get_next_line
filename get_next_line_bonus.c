@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:27 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/09 18:08:31 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/16 15:59:39 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 
 char	*ft_read(int fd)
 {
-	int		i ;
-	int		ret;
 	char	buf[BUFFER_SIZE + 1];
 	char	*joint;
 	char	*save;
+	ssize_t	ret;
+	int	i ;
 
 	ret = 1;
 	joint = NULL;
@@ -47,7 +47,7 @@ char	*ft_read(int fd)
 
 char	*ft_extract_str(char *str)
 {
-	int		i;
+	int	i;
 	char	*dup;
 
 	i = 0;
@@ -63,9 +63,9 @@ char	*ft_extract_str(char *str)
 
 char	*ft_trim_str(char *str)
 {
-	int		i;
-	int		j;
-	int		trimsize;
+	int	i;
+	int	j;
+	int	trimsize;
 	char	*trim;
 
 	i = 0;
@@ -75,7 +75,7 @@ char	*ft_trim_str(char *str)
 		return (NULL);
 	while (str && str[i] && str[i] != '\n')
 		i++;
-	if (str)
+	if (str[i] && str[i] == '\n')
 		i++;
 	trimsize = (ft_strlen(str)) - i;
 	trim = (char *)malloc(trimsize + 1 * sizeof(char));
@@ -87,7 +87,7 @@ char	*ft_trim_str(char *str)
 	return (trim);
 }
 
-char	*get_next_line_bonus(int fd)
+char	*get_next_line(int fd)
 {
 	static char	*mainsource[1024];
 	char		*p;

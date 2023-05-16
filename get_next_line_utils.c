@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:19 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/09 17:04:46 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/16 20:21:49 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include "get_next_line.h"
 
-int	ft_spec_strcpy(char *dst, const char *src, int i)
+size_t ft_spec_strcpy(char *dst, const char *src, int i)
 {
 	size_t	j;
 
@@ -37,10 +37,10 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		s1size;
 	int		s2size;
 
-	s1size = ft_strlen(s1);
-	s2size = ft_strlen(s2);
 	if (!s1 && !s2)
 		return (NULL);
+	s1size = ft_strlen(s1);
+	s2size = ft_strlen(s2);
 	i = 0;
 	p = (char *)malloc((s1size + s2size + 1) * sizeof(char));
 	if (p == NULL)
@@ -51,9 +51,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (p);
 }
 
-char	*ft_strlcpy(char *dst, const char *src, size_t size)
+char	*ft_strlcpy(char *dst, const char *src, int size)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (size == 0)
@@ -72,6 +72,8 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s && s[i])
 			i++;
 	return (i);
