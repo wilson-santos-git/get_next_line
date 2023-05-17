@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:19 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/16 16:02:17 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:47:26 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ size_t	ft_spec_strcpy(char *dst, const char *src, int i)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	int	i;
+	int		i;
 	char	*p;
-	int	s1size;
-	int	s2size;
+	int		s1size;
+	int		s2size;
 
 	s1size = ft_strlen(s1);
 	s2size = ft_strlen(s2);
@@ -75,4 +75,16 @@ size_t	ft_strlen(const char *s)
 	while (s && s[i])
 			i++;
 	return (i);
+}
+
+int	ft_find_n(char *s, char c)
+{
+	int	i;
+
+	i = 0;
+	while (s && s[i] && s[i] != c)
+		i++;
+	if (s[i] == c)
+		return (1);
+	return (0);
 }

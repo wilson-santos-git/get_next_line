@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:19 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/16 20:21:49 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/17 18:20:59 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,16 @@ size_t	ft_strlen(const char *s)
 	while (s && s[i])
 			i++;
 	return (i);
+}
+
+int	ft_find_n(char *s, char c)
+{
+	size_t	i;
+
+	i = 0;
+	while (s && s[i] && s[i] != c)
+		i++;
+	if (s[i] == c)
+		return (1);
+	return (0);
 }

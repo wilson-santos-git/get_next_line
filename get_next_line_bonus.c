@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:27 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/16 15:59:39 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/17 16:21:41 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,36 +18,35 @@
 
 char	*ft_read(int fd)
 {
-	char	buf[BUFFER_SIZE + 1];
-	char	*joint;
-	char	*save;
 	ssize_t	ret;
-	int	i ;
-
+	char	*buf;
+	char	*save;
+	char	*joint;
+	
 	ret = 1;
 	joint = NULL;
+	buf = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buf)
+		return (NULL);
 	while (ret > 0)
 	{
 		ret = read(fd, buf, BUFFER_SIZE);
-		if (ret < 0)
-			return (NULL);
 		buf[ret] = '\0';
 		save = ft_strjoin(joint, buf);
 		free(joint);
 		joint = save;
 		if (!joint)
 			return (NULL);
-		i = 0;
-		while (joint[i])
-			if (joint[i++] == '\n')
-				return (joint);
+		if (ft_find_n(joint, '\n'))
+			break ;
 	}
+	free(buf);
 	return (joint);
 }
 
 char	*ft_extract_str(char *str)
 {
-	int	i;
+	int		i;
 	char	*dup;
 
 	i = 0;
@@ -89,10 +88,10 @@ char	*ft_trim_str(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char	*mainsource[1024];
 	char		*p;
 	char		*readptr;
 	char		*finalreturn;
+	static char	*mainsource[1024];
 
 	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) == -1)
 		return (NULL);
