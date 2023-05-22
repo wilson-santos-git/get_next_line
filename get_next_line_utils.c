@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:19 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/09 17:04:46 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/22 11:47:32 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,63 +16,31 @@
 #include <fcntl.h>
 #include "get_next_line.h"
 
-int	ft_spec_strcpy(char *dst, const char *src, int i)
+size_t	ft_strlen(const char *str)
 {
-	size_t	j;
+	size_t	i;
 
-	j = 0;
-	while (src && src[j])
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
 	{
-		dst[i] = src[j];
+		if (str[i] == '\n')
+			return (i + 1);
 		i++;
-		j++;
 	}
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+size_t	ft_strcpy(char *line, char *aux)
 {
-	int		i;
-	char	*p;
-	int		s1size;
-	int		s2size;
-
-	s1size = ft_strlen(s1);
-	s2size = ft_strlen(s2);
-	if (!s1 && !s2)
-		return (NULL);
-	i = 0;
-	p = (char *)malloc((s1size + s2size + 1) * sizeof(char));
-	if (p == NULL)
-		return (p);
-	i = ft_spec_strcpy(p, s1, i);
-	i = ft_spec_strcpy(p, s2, i);
-	p[i] = '\0';
-	return (p);
-}
-
-char	*ft_strlcpy(char *dst, const char *src, size_t size)
-{
-	size_t	i;
+	int	i;
 
 	i = 0;
-	if (size == 0)
-		return (dst);
-	while (src[i] && i < size - 1)
+	while (aux[i])
 	{
-		dst[i] = src[i];
+		line[i] = aux[i];
 		i++;
 	}
-	dst[i] = '\0';
-	return (dst);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s && s[i])
-			i++;
 	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 15:18:27 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/09 18:34:28 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/22 11:59:14 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,100 +16,93 @@
 #include <fcntl.h>
 #include "get_next_line.h"
 
-char	*ft_read(int fd)
+char	*ft_extract_line(char *str, char *buff)
 {
-	int		i ;
-	int		ret;
-	char	buf[BUFFER_SIZE + 1];
-	char	*joint;
-	char	*save;
-
-	ret = 1;
-	joint = NULL;
-	while (ret > 0)
-	{
-		ret = read(fd, buf, BUFFER_SIZE);
-		if (ret < 0)
-			return (NULL);
-		buf[ret] = '\0';
-		save = ft_strjoin(joint, buf);
-		free(joint);
-		joint = save;
-		if (!joint)
-			return (NULL);
-		i = 0;
-		while (joint[i])
-			if (joint[i++] == '\n')
-				return (joint);
-	}
-	return (joint);
-}
-
-char	*ft_extract_str(char *str)
-{
+	char	*s;
 	int		i;
-	char	*dup;
+	int		j;	
 
+	s = str;
 	i = 0;
+	str = malloc(sizeof(char) * ft_strlen(buff) + ft_strlen(str) + 1);
 	if (!str)
 		return (NULL);
-	while (str && str[i] && str[i] != '\n')
-		i++;
-	dup = (char *)malloc((i + 2) * sizeof(char));
-	if (!dup)
-		return (NULL);
-	return (ft_strlcpy(dup, str, i + 2));
-}
-
-char	*ft_trim_str(char *str)
-{
-	int		i;
-	int		j;
-	int		trimsize;
-	char	*trim;
-
-	i = 0;
+	if (s)
+		i = ft_strcpy(str, s);
 	j = 0;
-	trimsize = 0;
-	if (!str)
-		return (NULL);
+	while (buff[j])
+	{
+		str[i++] = buff[j];
+		if (buff[j++] == '\n')
+			break ;
+	}
+	str[i] = '\0';
+	if (s)
+		free(s);
+	return (str);
+}
+
+int	ft_find_n(char *str)
+{
+	int	i;
+
+	i = 0;
 	while (str && str[i] && str[i] != '\n')
 		i++;
-	if (str[i])
-		i++;
-	trimsize = (ft_strlen(str)) - i;
-	trim = (char *)malloc(trimsize + 1 * sizeof(char));
-	if (!trim)
-		return (NULL);
-	while (str && str[i])
-		trim[j++] = str[i++];
-	trim[j] = '\0';
-	return (trim);
+	return (str[i] != '\n');
+}
+
+void	ft_update(char *buff)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = -1;
+	while (buff[i])
+	{
+		if (j == -1 && buff[i] == '\n')
+			j = 0;
+		else if (j >= 0)
+			buff[j++] = buff[i];
+		buff[i++] = 0;
+	}
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*mainsource;
-	char		*p;
-	char		*readptr;
-	char		*finalreturn;
+	static char	buf[BUFFER_SIZE];
+	char		*str;
+	size_t		ret;
+	size_t		i;
 
-	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) == -1)
+	if (BUFFER_SIZE <= 0)
 		return (NULL);
-	readptr = ft_read(fd);
-	if (!readptr && !mainsource)
-		return (NULL);
-	p = ft_strjoin(mainsource, readptr);
-	free(readptr);
-	free(mainsource);
-	mainsource = NULL;
-	if (ft_strlen(p) == 0)
+	str = NULL;
+	i = 1;
+	while (i)
 	{
-		free(p);
-		return (NULL);
+		ret = 1;
+		if (!buf[0])
+			ret = read(fd, buf, BUFFER_SIZE);
+		i = ft_find_n(buf) * ret > 0;
+		if (ret > 0)
+			str = ft_extract_line(str, buf);
+		ft_update(buf);
 	}
-	mainsource = ft_trim_str(p);
-	finalreturn = ft_extract_str(p);
-	free(p);
-	return (finalreturn);
+	return (str);
+}
+
+int	main (void)
+{
+ 	int fd;
+ 	char *str;	 
+	fd = open("test.txt", O_RDONLY);
+ 	while (1)
+	{
+		str = get_next_line(fd);
+		printf("%s", str);
+		if (!str)
+			break ;
+	}
 }
