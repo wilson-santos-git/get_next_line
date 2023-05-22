@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 15:18:35 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/22 12:01:56 by wteles-d         ###   ########.fr       */
+/*   Created: 2023/05/22 12:25:15 by wteles-d          #+#    #+#             */
+/*   Updated: 2023/05/22 12:26:02 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-int     ft_find_n(char *str);
+int		ft_find_n(char *str);
 void	ft_update(char *buff);
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
