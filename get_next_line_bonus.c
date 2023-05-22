@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 12:26:57 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/22 12:27:05 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:06:07 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ char	*ft_extract_line(char *str, char *buff)
 	}
 	str[i] = '\0';
 	if (s)
+	{
 		free(s);
+		s = NULL;
+	}
 	return (str);
 }
 
@@ -76,7 +79,7 @@ char	*get_next_line(int fd)
 	size_t		ret;
 	size_t		i;
 
-	if (BUFFER_SIZE <= 0)
+	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (NULL);
 	str = NULL;
 	i = 1;
@@ -93,28 +96,28 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-int	main (void)
-{ 
-	int	fd1 = open("test1.txt", O_RDONLY);
-	int	fd2 = open("test2.txt", O_RDONLY);
-	int	fd3 = open("test3.txt", O_RDONLY);
-	int	fd4 = open("test4.txt", O_RDONLY);
-	int	fd5 = open("test5.txt", O_RDONLY);
-	int	fd6 = open("test6.txt", O_RDONLY);
-	printf("%s \n", get_next_line(fd1));
-	printf("%s \n", get_next_line(fd4));
-	printf("%s \n", get_next_line(fd3));
-	printf("%s \n", get_next_line(fd6));
-	printf("%s \n", get_next_line(fd2));
-	printf("%s \n", get_next_line(fd3));
-	printf("%s \n", get_next_line(fd1));
-	printf("%s \n", get_next_line(fd1));
-	printf("%s \n", get_next_line(fd4));
-	printf("%s \n", get_next_line(fd5));
-	printf("%s \n", get_next_line(fd3));
-	printf("%s \n", get_next_line(fd6));
-	printf("%s \n", get_next_line(fd6));
-	printf("%s \n", get_next_line(fd2));
-	printf("%s \n", get_next_line(fd1));
-	printf("%s \n", get_next_line(fd3));
-}
+// int	main (void)
+// { 
+// 	int	fd1 = open("test1.txt", O_RDONLY);
+// 	int	fd2 = open("test2.txt", O_RDONLY);
+// 	int	fd3 = open("test3.txt", O_RDONLY);
+// 	int	fd4 = open("test4.txt", O_RDONLY);
+// 	int	fd5 = open("test5.txt", O_RDONLY);
+// 	int	fd6 = open("test6.txt", O_RDONLY);
+// 	printf("%s \n", get_next_line(fd1));
+// 	printf("%s \n", get_next_line(fd4));
+// 	printf("%s \n", get_next_line(fd3));
+// 	printf("%s \n", get_next_line(fd6));
+// 	printf("%s \n", get_next_line(fd2));
+// 	printf("%s \n", get_next_line(fd3));
+// 	printf("%s \n", get_next_line(fd1));
+// 	printf("%s \n", get_next_line(fd1));
+// 	printf("%s \n", get_next_line(fd4));
+// 	printf("%s \n", get_next_line(fd5));
+// 	printf("%s \n", get_next_line(fd3));
+// 	printf("%s \n", get_next_line(fd6));
+// 	printf("%s \n", get_next_line(fd6));
+// 	printf("%s \n", get_next_line(fd2));
+// 	printf("%s \n", get_next_line(fd1));
+// 	printf("%s \n", get_next_line(fd3));
+// }

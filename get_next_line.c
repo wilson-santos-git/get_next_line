@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 12:24:48 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/22 12:25:06 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/22 19:06:34 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ char	*ft_extract_line(char *str, char *buff)
 	}
 	str[i] = '\0';
 	if (s)
+	{
 		free(s);
+		s = NULL;
+	}
 	return (str);
 }
 
@@ -73,18 +76,24 @@ char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE];
 	char		*str;
-	size_t		ret;
+	ssize_t		ret;
 	size_t		i;
 
-	if (BUFFER_SIZE <= 0)
+	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (NULL);
 	str = NULL;
 	i = 1;
 	while (i)
 	{
-		ret = 1;
 		if (!buf[0])
 			ret = read(fd, buf, BUFFER_SIZE);
+		else
+			ret = 1;
+		if (ret < 0)
+		{
+			printf("HUH\n");
+			exit(EXIT_FAILURE);
+		}
 		i = ft_find_n(buf) * ret > 0;
 		if (ret > 0)
 			str = ft_extract_line(str, buf);
@@ -93,16 +102,22 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-int	main (void)
-{
- 	int fd;
- 	char *str;	 
-	fd = open("test.txt", O_RDONLY);
- 	while (1)
-	{
-		str = get_next_line(fd);
-		printf("%s", str);
-		if (!str)
-			break ;
-	}
-}
+// int	main (void)
+// {
+//  	//char *str;	 
+// 	int fd = open("test.txt", O_RDONLY);
+//  	// while (1)
+// 	// {
+// 	// 	str = get_next_line(fd);
+// 	// 	printf("%s", str);
+// 	// 	if (!str)
+// 	// 		break ;
+// 	// }
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// 	close(fd);
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// 	printf("%s", get_next_line(fd));
+// }
