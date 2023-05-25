@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 12:25:15 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/22 12:26:02 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/25 18:59:08 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 #  define BUFFER_SIZE 1
 # endif
 
+# include <fcntl.h>
 # include <stddef.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <fcntl.h>
 
 int		ft_find_n(char *str);
 void	ft_update(char *buff);

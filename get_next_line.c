@@ -6,7 +6,7 @@
 /*   By: wteles-d <wteles-d@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 12:24:48 by wteles-d          #+#    #+#             */
-/*   Updated: 2023/05/22 19:06:34 by wteles-d         ###   ########.fr       */
+/*   Updated: 2023/05/25 18:58:38 by wteles-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,84 +16,27 @@
 #include <fcntl.h>
 #include "get_next_line.h"
 
-char	*ft_extract_line(char *str, char *buff)
-{
-	char	*s;
-	int		i;
-	int		j;	
-
-	s = str;
-	i = 0;
-	str = malloc(sizeof(char) * ft_strlen(buff) + ft_strlen(str) + 1);
-	if (!str)
-		return (NULL);
-	if (s)
-		i = ft_strcpy(str, s);
-	j = 0;
-	while (buff[j])
-	{
-		str[i++] = buff[j];
-		if (buff[j++] == '\n')
-			break ;
-	}
-	str[i] = '\0';
-	if (s)
-	{
-		free(s);
-		s = NULL;
-	}
-	return (str);
-}
-
-int	ft_find_n(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i] && str[i] != '\n')
-		i++;
-	return (str[i] != '\n');
-}
-
-void	ft_update(char *buff)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = -1;
-	while (buff[i])
-	{
-		if (j == -1 && buff[i] == '\n')
-			j = 0;
-		else if (j >= 0)
-			buff[j++] = buff[i];
-		buff[i++] = 0;
-	}
-}
-
 char	*get_next_line(int fd)
 {
-	static char	buf[BUFFER_SIZE];
-	char		*str;
-	ssize_t		ret;
 	size_t		i;
+	ssize_t		ret;
+	char		*str;
+	static char	buf[BUFFER_SIZE + 1];
 
-	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
+	if (BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		i = 0;
+		while (buf[i])
+			buf[i++] = 0;
 		return (NULL);
-	str = NULL;
+	}
 	i = 1;
+	ret = 1;
+	str = NULL;
 	while (i)
 	{
 		if (!buf[0])
 			ret = read(fd, buf, BUFFER_SIZE);
-		else
-			ret = 1;
-		if (ret < 0)
-		{
-			printf("HUH\n");
-			exit(EXIT_FAILURE);
-		}
 		i = ft_find_n(buf) * ret > 0;
 		if (ret > 0)
 			str = ft_extract_line(str, buf);
@@ -101,23 +44,3 @@ char	*get_next_line(int fd)
 	}
 	return (str);
 }
-
-// int	main (void)
-// {
-//  	//char *str;	 
-// 	int fd = open("test.txt", O_RDONLY);
-//  	// while (1)
-// 	// {
-// 	// 	str = get_next_line(fd);
-// 	// 	printf("%s", str);
-// 	// 	if (!str)
-// 	// 		break ;
-// 	// }
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// 	close(fd);
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// 	printf("%s", get_next_line(fd));
-// }
